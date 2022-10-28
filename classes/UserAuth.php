@@ -38,12 +38,11 @@ class UserAuth extends Dbh{
     public function register($fullname, $email, $password, $confirmPassword, $country, $gender){
         $conn = $this->db->connect();
         $dir = dirname($_SERVER['REQUEST_URI']);
-
+        //check if password match and if user exists
         if($this->confirmPasswordMatch($password, $confirmPassword) && !$this->checkEmailExist($email)){
             $sql = "INSERT INTO Students (`full_names`, `email`, `password`, `country`, `gender`) VALUES ('$fullname','$email', '$password', '$country', '$gender')";
 
             if($conn->query($sql)){
-                $dir = dirname($_SERVER['REQUEST_URI']);
                echo "<script>alert('User successfully registered')</script>";
                header("refresh: 0.5; url=${dir}/forms/login.php");
             } else {
